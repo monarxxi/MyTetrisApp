@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -17,6 +16,9 @@ public partial class MainWindow
     private int _speed = 300; // Интервал в миллисекундах, скорость падения блока (начальная скорость)
     private bool _isFastDropActive; // Флаг для быстрого падения
 
+    private bool _isPaused; // Флаг для паузы
+    private bool _isGameRunning; // Флаг, указывающий, что игра идёт
+
     public MainWindow(Game game)
     {
         _game = game;
@@ -26,9 +28,67 @@ public partial class MainWindow
         KeyDown += OnKeyDown;
         KeyUp += OnKeyUp;
 
+        // Настраиваем состояние по умолчанию
+        _isPaused = false;
+        _isGameRunning = false;
 
         // Устанавливаем окно в полноэкранный режим
         WindowState = WindowState.Maximized;
+    }
+
+    private void StartGame()
+    {
+        // Инициализируем игру
+        _game = new Game(10, 20);
+
+        // Подписываемся на события игры
+        _game.OnSpeedIncrease += IncreaseSpeed;
+        _game.OnGameOver += GameOver;
+
+        // Настраиваем таймер
+        _gameTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(_speed)
+        };
+        _gameTimer.Tick += UpdateGame;
+
+        // Настраиваем интерфейс
+        DrawBoard();
+        RenderGame();
+
+        // Запускаем игру
+        _gameTimer.Start();
+        _isGameRunning = true;
+        _isPaused = false;
+    }
+
+    private void PauseGame()
+    {
+        if (_isGameRunning && !_isPaused)
+        {
+            _gameTimer.Stop();
+            _isPaused = true;
+        }
+    }
+
+    private void ResumeGame()
+    {
+        if (_isGameRunning && _isPaused)
+        {
+            _gameTimer.Start();
+            _isPaused = false;
+        }
+    }
+
+    private void RestartGame()
+    {
+        // Останавливаем текущую игру
+        if (_isGameRunning)
+        {
+            _gameTimer.Stop();
+        }
+
+        // Перезапускаем игру
         StartGame();
     }
 
@@ -48,40 +108,10 @@ public partial class MainWindow
             case >= 80:
                 break;
         }
-        
-        if (_speed > 100) // Не уменьшаем скорость ниже 100 мс
-        {
-            _speed -= 50; // Уменьшаем интервал
-            _gameTimer.Interval = TimeSpan.FromMilliseconds(_speed); // Применяем новый интервал
-        }
-    }
-
-    private void StartGame()
-    {
-        // Создаем экземпляр игры
-        _game = new Game(10, 20);
-        
-        // Подписываемся на событие увеличения скорости
-        _game.OnSpeedIncrease += IncreaseSpeed;
-
-        // Подписываемся на событие завершения игры
-        _game.OnGameOver += GameOver;
-
-        // Инициализируем доску
-        DrawBoard();
-
-        // Инициализация таймера
-        _gameTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(_speed) // Устанавливаем интервал таймера
-        };
-        _gameTimer.Tick += UpdateGame; // Подписка на событие обновления игры
-        _gameTimer.Start(); // Запускаем таймер
     }
 
     private void DrawBoard()
     {
-        // Настраиваем размеры канвасов
         var canvasWidth = _game.Board.Width * CellSize;
         var canvasHeight = _game.Board.Height * CellSize;
 
@@ -90,10 +120,8 @@ public partial class MainWindow
         GameCanvas.Width = canvasWidth;
         GameCanvas.Height = canvasHeight;
 
-        // Очищаем только сетку, чтобы избежать дублирования
         GridCanvas.Children.Clear();
 
-        // Рисуем сетку игрового поля
         for (var y = 0; y < _game.Board.Height; y++)
         {
             for (var x = 0; x < _game.Board.Width; x++)
@@ -112,21 +140,10 @@ public partial class MainWindow
         }
     }
 
-    private void UpdateGame(object? sender, EventArgs e)
-    {
-        // Обновляем логику игры
-        _game.Update();
-
-        // Перерисовываем игровое поле
-        RenderGame();
-    }
-
     private void RenderGame()
     {
-        // Очищаем только канвас для фигур
         GameCanvas.Children.Clear();
 
-        // Рисуем статические ячейки (занятые клетки)
         for (var y = 0; y < _game.Board.Height; y++)
         {
             for (var x = 0; x < _game.Board.Width; x++)
@@ -138,7 +155,6 @@ public partial class MainWindow
             }
         }
 
-        // Рисуем текущую фигурку
         foreach (var (x, y) in _game.CurrentTetromino.GetCells())
         {
             DrawCell(GameCanvas, x, y, _game.CurrentTetromino.Color);
@@ -152,8 +168,8 @@ public partial class MainWindow
             Width = CellSize,
             Height = CellSize,
             Fill = color,
-            Stroke = Brushes.Black, // Цвет границы
-            StrokeThickness = 2 // Толщина границы
+            Stroke = Brushes.Black,
+            StrokeThickness = 2
         };
 
         Canvas.SetLeft(cell, x * CellSize);
@@ -161,31 +177,34 @@ public partial class MainWindow
         canvas.Children.Add(cell);
     }
 
+    private void UpdateGame(object? sender, EventArgs e)
+    {
+        _game.Update();
+        RenderGame();
+    }
+
     private void GameOver()
     {
-        // Отображение сообщения о завершении игры
         MessageBox.Show("Game Over!");
-        CompositionTarget.Rendering -= UpdateGame; // Останавливаем обновление игры
+        _gameTimer.Stop();
+        _isGameRunning = false;
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e)
     {
+        if (!_isGameRunning || _isPaused) return;
+
         switch (e.Key)
         {
             case Key.Left:
-                // Перемещение фигурки влево
                 _game.CurrentTetromino.MoveLeft(_game.Board);
                 RenderGame();
                 break;
-
             case Key.Right:
-                // Перемещение фигурки вправо
                 _game.CurrentTetromino.MoveRight(_game.Board);
                 RenderGame();
                 break;
-
             case Key.Down:
-                // Ускорение падения
                 if (!_isFastDropActive)
                 {
                     _isFastDropActive = true;
@@ -194,7 +213,6 @@ public partial class MainWindow
 
                 break;
             case Key.Up:
-                // Вращение фигурки
                 if (_game.CurrentTetromino.CanRotate(_game.Board))
                 {
                     _game.CurrentTetromino.Rotate();
@@ -209,9 +227,30 @@ public partial class MainWindow
     {
         if (e.Key == Key.Down && _isFastDropActive)
         {
-            // Возвращаем скорость после отпускания кнопки вниз
             _isFastDropActive = false;
             _gameTimer.Interval = TimeSpan.FromMilliseconds(_speed);
         }
+    }
+
+    private void StartButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (!_isGameRunning)
+        {
+            StartGame();
+        }
+        else if (_isPaused)
+        {
+            ResumeGame();
+        }
+    }
+
+    private void PauseButton_Click(object sender, RoutedEventArgs e)
+    {
+        PauseGame();
+    }
+
+    private void RestartButton_Click(object sender, RoutedEventArgs e)
+    {
+        RestartGame();
     }
 }

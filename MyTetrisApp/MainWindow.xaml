@@ -1,12 +1,28 @@
 ﻿<Window x:Class="MyTetrisApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Tetris" Height="900" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <!-- Слой для сетки -->
-        <Canvas Name="GridCanvas" Background="Black" IsHitTestVisible="False" />
+        Title="Tetris" Height="900" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <!-- Определяем два столбца: поле и панель с кнопками -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" /> <!-- Игровое поле (растягивается на всё доступное место) -->
+            <ColumnDefinition Width="200" /> <!-- Колонка для кнопок -->
+        </Grid.ColumnDefinitions>
 
-        <!-- Слой для фигур -->
-        <Canvas Name="GameCanvas" Background="Transparent" IsHitTestVisible="False" />
+        <!-- Игровое поле -->
+        <Grid>
+            <!-- Слой для сетки -->
+            <Canvas Name="GridCanvas" Background="Black" IsHitTestVisible="False" />
+
+            <!-- Слой для фигур -->
+            <Canvas Name="GameCanvas" Background="Transparent" IsHitTestVisible="False" />
+        </Grid>
+
+        <!-- Панель с кнопками -->
+        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <Button Name="StartButton" Content="Start" Width="150" Height="50" Click="StartButton_Click" Margin="0,10" FontSize="16"/>
+            <Button Name="PauseButton" Content="Pause" Width="150" Height="50" Click="PauseButton_Click" Margin="0,10" FontSize="16"/>
+            <Button Name="RestartButton" Content="Restart" Width="150" Height="50" Click="RestartButton_Click" Margin="0,10" FontSize="16"/>
+        </StackPanel>
     </Grid>
 </Window>
