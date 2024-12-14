@@ -13,30 +13,10 @@ public class BlockZ : Tetromino
         Shape = new[,]
         {
             { 1, 1, 0 },
-            { 0, 1, 1 }
+            { 0, 1, 1 },
+            { 0, 0, 0 }
         };
 
         Color = Brushes.Red;
-    }
-
-    /// <summary>
-    /// Переопределение метода вращения.
-    /// Фигура "Z" имеет 2 состояния (горизонтальное и вертикальное).
-    /// </summary>
-    public override void Rotate()
-    {
-        var size = Shape.GetLength(0);
-        var rotated = new int[size, size];
-
-        // Транспонирование и инверсия для вращения
-        for (var row = 0; row < size; row++)
-        {
-            for (var col = 0; col < size; col++)
-            {
-                rotated[col, size - 1 - row] = Shape[row, col];
-            }
-        }
-
-        Shape = rotated;
     }
 }
