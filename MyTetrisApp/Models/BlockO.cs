@@ -23,8 +23,9 @@ public class BlockO : Tetromino
     /// Переопределение метода вращения.
     /// У "BlockO" форма не изменяется при вращении.
     /// </summary>
-    public override void Rotate()
+    public override bool Rotate(Board board)
     {
         // Для BlockO ничего не делаем, так как форма не меняется
+        return true;
     }
 }

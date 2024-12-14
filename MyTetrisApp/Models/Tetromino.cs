@@ -75,25 +75,9 @@ public abstract class Tetromino(int startX, int startY)
         return true;
     }
 
-    public virtual void Rotate()
+    public virtual bool Rotate(Board board)
     {
-        var size = Shape.GetLength(0); // Размер квадратной матрицы (3x3)
-        var rotated = new int[size, size]; // Новая матрица для повернутой формы
-
-        for (var row = 0; row < size; row++)
-        {
-            for (var col = 0; col < size; col++)
-            {
-                rotated[col, size - 1 - row] = Shape[row, col]; // Транспонирование и инверсия строк
-            }
-        }
-
-        Shape = rotated; // Применяем новую форму
-    }
-
-    public bool CanRotate(Board board)
-    {
-        var size = Shape.GetLength(0);
+        var size = Shape.GetLength(0); // Размер квадратной матрицы 
         var rotated = new int[size, size];
 
         // Транспонирование и инверсия строк
@@ -105,12 +89,52 @@ public abstract class Tetromino(int startX, int startY)
             }
         }
 
-        // Проверяем, что после поворота координаты остаются валидными
-        foreach (var (x, y) in GetRotatedCells(rotated))
+        // Проверяем возможность вращения без коррекции
+        if (CanPlace(board, rotated, X, Y))
         {
-            if (x < 0 || x >= board.Width || y < 0 || y >= board.Height || board.IsCellOccupied(x, y))
+            Shape = rotated;
+            return true;
+        }
+
+        // Пробуем скорректировать смещение (kick correction)
+        int[] xOffsets = { -1, 1 }; // Попробуем сдвинуть влево и вправо
+        foreach (var xOffset in xOffsets)
+        {
+            if (CanPlace(board, rotated, X + xOffset, Y))
             {
-                return false;
+                X += xOffset; // Применяем сдвиг
+                Shape = rotated;
+                return true;
+            }
+        }
+
+        // Если ничего не помогло, поворот невозможен
+        return false;
+    }
+
+    private static bool CanPlace(Board board, int[,] rotatedShape, int newX, int newY)
+    {
+        for (var row = 0; row < rotatedShape.GetLength(0); row++)
+        {
+            for (var col = 0; col < rotatedShape.GetLength(1); col++)
+            {
+                if (rotatedShape[row, col] == 1)
+                {
+                    var boardX = newX + col;
+                    var boardY = newY + row;
+
+                    // Проверяем границы доски
+                    if (boardX < 0 || boardX >= board.Width || boardY < 0 || boardY >= board.Height)
+                    {
+                        return false;
+                    }
+
+                    // Проверяем, занята ли ячейка
+                    if (board.IsCellOccupied(boardX, boardY))
+                    {
+                        return false;
+                    }
+                }
             }
         }
 

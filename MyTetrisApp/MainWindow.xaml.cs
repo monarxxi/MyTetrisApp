@@ -213,9 +213,8 @@ public partial class MainWindow
 
                 break;
             case Key.Up:
-                if (_game.CurrentTetromino.CanRotate(_game.Board))
+                if (_game.CurrentTetromino.Rotate(_game.Board))
                 {
-                    _game.CurrentTetromino.Rotate();
                     RenderGame();
                 }
 
