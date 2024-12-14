@@ -36,10 +36,9 @@ public class Game(int boardWidth, int boardHeight)
         _clearedLines += linesCleared;
         
         // Уведомляем об увеличении скорости каждые 3 линий
-        if (_clearedLines >= 3)
+        if (_clearedLines % 3 == 0)
         {
             OnSpeedIncrease?.Invoke();
-            _clearedLines = 0; // Сбрасываем счётчик
         }
 
         // Создаем новую фигурку

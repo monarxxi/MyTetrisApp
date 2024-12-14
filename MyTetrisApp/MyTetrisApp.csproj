@@ -8,10 +8,4 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Events\" />
-      <Folder Include="Interfaces\" />
-      <Folder Include="Views\" />
-    </ItemGroup>
-
 </Project>

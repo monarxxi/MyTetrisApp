@@ -1,16 +1,32 @@
 ﻿<Window x:Class="MyTetrisApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Tetris" Height="900" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Tetris" Height="900" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        <!-- Определяем два столбца: поле и панель с кнопками -->
+        <!-- Определяем три столбца: табличка, игровое поле, панель с кнопками -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" /> <!-- Игровое поле (растягивается на всё доступное место) -->
-            <ColumnDefinition Width="200" /> <!-- Колонка для кнопок -->
+            <ColumnDefinition Width="200" /> <!-- Табличка -->
+            <ColumnDefinition Width="*" /> <!-- Игровое поле -->
+            <ColumnDefinition Width="200" /> <!-- Панель с кнопками -->
         </Grid.ColumnDefinitions>
 
+        <!-- Табличка -->
+        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Лучший счёт:" FontSize="20" FontWeight="Bold" Margin="0,10" HorizontalAlignment="Center"/>
+            <TextBlock Name="HighScoreTextBlock" Text="0" FontSize="16" Margin="0,10" HorizontalAlignment="Center"/>
+            
+            <TextBlock Text="Счёт:" FontSize="20" FontWeight="Bold" Margin="0,10" HorizontalAlignment="Center"/>
+            <TextBlock Name="ScoreTextBlock" Text="0" FontSize="16" Margin="0,10" HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Линий:" FontSize="20" FontWeight="Bold" Margin="0,10" HorizontalAlignment="Center"/>
+            <TextBlock Name="LinesTextBlock" Text="0" FontSize="16" Margin="0,10" HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Уровень:" FontSize="20" FontWeight="Bold" Margin="0,10" HorizontalAlignment="Center"/>
+            <TextBlock Name="LevelTextBlock" Text="1" FontSize="16" Margin="0,10" HorizontalAlignment="Center"/>
+        </StackPanel>
+
         <!-- Игровое поле -->
-        <Grid>
+        <Grid Grid.Column="1">
             <!-- Слой для сетки -->
             <Canvas Name="GridCanvas" Background="Black" IsHitTestVisible="False" />
 
@@ -19,10 +35,10 @@
         </Grid>
 
         <!-- Панель с кнопками -->
-        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-            <Button Name="StartButton" Content="Start" Width="150" Height="50" Click="StartButton_Click" Margin="0,10" FontSize="16"/>
-            <Button Name="PauseButton" Content="Pause" Width="150" Height="50" Click="PauseButton_Click" Margin="0,10" FontSize="16"/>
-            <Button Name="RestartButton" Content="Restart" Width="150" Height="50" Click="RestartButton_Click" Margin="0,10" FontSize="16"/>
+        <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <Button Name="StartButton" Content="Старт" Width="150" Height="50" Click="StartButton_Click" Margin="0,10" FontSize="16"/>
+            <Button Name="PauseButton" Content="Пауза" Width="150" Height="50" Click="PauseButton_Click" Margin="0,10" FontSize="16"/>
+            <Button Name="RestartButton" Content="Начать занаво" Width="150" Height="50" Click="RestartButton_Click" Margin="0,10" FontSize="16"/>
         </StackPanel>
     </Grid>
 </Window>
