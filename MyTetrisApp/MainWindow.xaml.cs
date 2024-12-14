@@ -84,7 +84,15 @@ public partial class MainWindow
     protected override void OnClosing(CancelEventArgs e)
     {
         SaveHighScore();
+        ResetScore();
         base.OnClosing(e);
+    }
+
+    private void ResetScore()
+    {
+        _score = 0;
+        _linesCleared = 0;
+        _level = 1;
     }
 
     private void PauseGame()
@@ -108,6 +116,7 @@ public partial class MainWindow
     private void RestartGame()
     {
         SaveHighScore();
+        ResetScore();
         
         // Останавливаем текущую игру
         if (_isGameRunning)
@@ -256,6 +265,8 @@ public partial class MainWindow
     private void GameOver()
     {
         SaveHighScore();
+        ResetScore();
+        
         MessageBox.Show("Game Over!");
         _gameTimer.Stop();
         _isGameRunning = false;
