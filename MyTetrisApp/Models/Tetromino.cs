@@ -1,3 +1,5 @@
+using System.Windows.Media;
+
 namespace MyTetrisApp.Models
 {
     public abstract class Tetromino
@@ -6,8 +8,11 @@ namespace MyTetrisApp.Models
         public int X { get; protected set; }
         public int Y { get; protected set; }
 
-        // Текущая форма фигурки (матрица 4x4)
+        // Текущая форма фигурки
         protected int[,] Shape;
+        
+        // Цвет фигурки
+        public Brush Color { get; protected set; } 
 
         // Конструктор для установки стартовой позиции
         protected Tetromino(int startX, int startY)
@@ -19,9 +24,9 @@ namespace MyTetrisApp.Models
         // Возвращает координаты ячеек фигурки относительно доски
         public IEnumerable<(int, int)> GetCells()
         {
-            for (int row = 0; row < Shape.GetLength(0); row++)
+            for (var row = 0; row < Shape.GetLength(0); row++)
             {
-                for (int col = 0; col < Shape.GetLength(1); col++)
+                for (var col = 0; col < Shape.GetLength(1); col++)
                 {
                     if (Shape[row, col] != 0)
                     {
@@ -34,12 +39,12 @@ namespace MyTetrisApp.Models
         // Метод для вращения фигурки (по умолчанию вращает на 90 градусов по часовой стрелке)
         public virtual void Rotate()
         {
-            int size = Shape.GetLength(0);
-            int[,] rotated = new int[size, size];
+            var size = Shape.GetLength(0);
+            var rotated = new int[size, size];
 
-            for (int row = 0; row < size; row++)
+            for (var row = 0; row < size; row++)
             {
-                for (int col = 0; col < size; col++)
+                for (var col = 0; col < size; col++)
                 {
                     rotated[col, size - 1 - row] = Shape[row, col];
                 }
@@ -89,8 +94,8 @@ namespace MyTetrisApp.Models
         {
             foreach (var (cellX, cellY) in GetCells())
             {
-                int newX = cellX + deltaX;
-                int newY = cellY + deltaY;
+                var newX = cellX + deltaX;
+                var newY = cellY + deltaY;
 
                 if (board.IsCellOccupied(newX, newY))
                 {

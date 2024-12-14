@@ -1,11 +1,13 @@
+using System.Windows.Media;
+
 namespace MyTetrisApp.Models;
 
 /// <summary>
 /// Реализация фигурки "S" (зеркальная зигзагообразная форма).
 /// </summary>
-public class SBlock : Tetromino
+public class BlockS : Tetromino
 {
-    public SBlock(int startX, int startY) : base(startX, startY)
+    public BlockS(int startX, int startY) : base(startX, startY)
     {
         // Устанавливаем начальную форму фигурки "S" (горизонтальная зеркальная зигзагообразная форма)
         Shape = new[,]
@@ -13,6 +15,8 @@ public class SBlock : Tetromino
             { 0, 1, 1 },
             { 1, 1, 0 }
         };
+
+        Color = Brushes.Green;
     }
 
     /// <summary>

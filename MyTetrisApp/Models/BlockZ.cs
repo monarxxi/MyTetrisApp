@@ -1,11 +1,13 @@
+using System.Windows.Media;
+
 namespace MyTetrisApp.Models;
 
 /// <summary>
 /// Реализация фигурки "Z" (зигзагообразная форма).
 /// </summary>
-public class ZBlock : Tetromino
+public class BlockZ : Tetromino
 {
-    public ZBlock(int startX, int startY) : base(startX, startY)
+    public BlockZ(int startX, int startY) : base(startX, startY)
     {
         // Устанавливаем начальную форму фигурки "Z" (горизонтальная зигзагообразная форма)
         Shape = new[,]
@@ -13,6 +15,8 @@ public class ZBlock : Tetromino
             { 1, 1, 0 },
             { 0, 1, 1 }
         };
+
+        Color = Brushes.Red;
     }
 
     /// <summary>

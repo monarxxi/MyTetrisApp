@@ -1,3 +1,5 @@
+using System.Windows.Media;
+
 namespace MyTetrisApp.Models;
 
 /// <summary>
@@ -13,6 +15,8 @@ public class BlockT : Tetromino
             { 0, 1, 0 },
             { 1, 1, 1 }
         };
+
+        Color = Brushes.Purple;
     }
 
     /// <summary>

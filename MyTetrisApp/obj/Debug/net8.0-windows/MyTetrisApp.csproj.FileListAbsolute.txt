@@ -6,7 +6,6 @@ C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\bin\Debug\net8.0-windows\MyTet
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\App.g.cs
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MyTetrisApp_MarkupCompile.cache
-C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MyTetrisApp_MarkupCompile.lref
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MainWindow.baml
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MyTetrisApp.g.resources
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MyTetrisApp.GeneratedMSBuildEditorConfig.editorconfig
@@ -18,3 +17,4 @@ C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\refin
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MyTetrisApp.pdb
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MyTetrisApp.genruntimeconfig.cache
 C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\ref\MyTetrisApp.dll
+C:\Users\Mi\RiderProjects\MyTetrisApp\MyTetrisApp\obj\Debug\net8.0-windows\MyTetrisApp.sourcelink.json

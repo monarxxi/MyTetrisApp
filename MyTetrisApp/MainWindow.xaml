@@ -1,12 +1,12 @@
 ﻿<Window x:Class="MyTetrisApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyTetrisApp"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Canvas Name="GameCanvas" Background="Black" />
+        Title="Tetris" Height="900" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <!-- Слой для сетки -->
+        <Canvas Name="GridCanvas" Background="Black" IsHitTestVisible="False" />
+
+        <!-- Слой для фигур -->
+        <Canvas Name="GameCanvas" Background="Transparent" IsHitTestVisible="False" />
     </Grid>
 </Window>
