@@ -1,0 +1,37 @@
+# Сгенерированные файлы IDE
+.idea/
+*.iml
+
+# Rider-specific files
+*.sln.iml
+
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Rider run/debug configs
+*.run/
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp

@@ -113,13 +113,15 @@ public partial class MainWindow
         }
     }
 
-    private void DrawCell(Canvas canvas, int x, int y, Brush color)
+    private static void DrawCell(Canvas canvas, int x, int y, Brush color)
     {
         var cell = new Rectangle
         {
             Width = CellSize,
             Height = CellSize,
-            Fill = color
+            Fill = color,
+            Stroke = Brushes.Black, // Цвет границы
+            StrokeThickness = 2 // Толщина границы
         };
         Canvas.SetLeft(cell, x * CellSize);
         Canvas.SetTop(cell, y * CellSize);
