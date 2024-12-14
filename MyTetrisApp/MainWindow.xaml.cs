@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -69,6 +70,7 @@ public partial class MainWindow
         // Настраиваем интерфейс
         DrawBoard();
         RenderGame();
+        RenderNextFigure();
 
         // Запускаем игру
         _gameTimer.Start();
@@ -79,7 +81,7 @@ public partial class MainWindow
         UpdateStats();
     }
     
-    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    protected override void OnClosing(CancelEventArgs e)
     {
         SaveHighScore();
         base.OnClosing(e);
@@ -121,16 +123,14 @@ public partial class MainWindow
     {
         switch (_speed)
         {
-            case >= 300:
+            case >= 200:
                 _speed -= 25;
                 break;
-            case >= 200:
+            case >= 150:
                 _speed -= 10;
                 break;
             case >= 100:
                 _speed -= 5;
-                break;
-            case >= 80:
                 break;
         }
     }
@@ -235,6 +235,7 @@ public partial class MainWindow
             
             // Проверяем уровень (каждые 3 линий)
             _level = 1 + (_linesCleared / 3);
+            //_level = _speed;
             
             // Обновляем лучший счёт
             if (_score > _highScore)
@@ -249,6 +250,7 @@ public partial class MainWindow
 
         // Перерисовываем игровое поле
         RenderGame();
+        RenderNextFigure();
     }
 
     private void GameOver()
@@ -344,5 +346,40 @@ public partial class MainWindow
     private void SaveHighScore()
     {
         File.WriteAllText(HighScoreFilePath, _highScore.ToString());
+    }
+    
+    private void RenderNextFigure()
+    {
+        NextFigureCanvas.Children.Clear();
+
+        // Размер одной ячейки
+        var cellSize = NextFigureCanvas.Width / 4; // 4x4 матрица для следующей фигуры
+
+        // Центрирование фигуры в пределах 4x4 матрицы
+        var offsetX = (NextFigureCanvas.Width - _game.NextTetromino.Shape.GetLength(1) * cellSize) / 2;
+        var offsetY = (NextFigureCanvas.Height - _game.NextTetromino.Shape.GetLength(0) * cellSize) / 2;
+
+        // Рисуем фигуру
+        for (var row = 0; row < _game.NextTetromino.Shape.GetLength(0); row++)
+        {
+            for (var col = 0; col < _game.NextTetromino.Shape.GetLength(1); col++)
+            {
+                if (_game.NextTetromino.Shape[row, col] == 1) // Рисуем только занятые клетки
+                {
+                    var cell = new Rectangle
+                    {
+                        Width = cellSize,
+                        Height = cellSize,
+                        Fill = _game.NextTetromino.Color,
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 1
+                    };
+
+                    Canvas.SetLeft(cell, offsetX + col * cellSize);
+                    Canvas.SetTop(cell, offsetY + row * cellSize);
+                    NextFigureCanvas.Children.Add(cell);
+                }
+            }
+        }
     }
 }

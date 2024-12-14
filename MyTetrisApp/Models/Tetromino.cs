@@ -9,7 +9,7 @@ public abstract class Tetromino(int startX, int startY)
     private int Y { get; set; } = startY;
 
     // Текущая форма фигурки
-    protected int[,] Shape = new int[1, 1]; // Значение по умолчанию
+    protected internal int[,] Shape = new int[1, 1]; // Значение по умолчанию
 
     // Цвет фигурки
     public Brush Color { get; protected init; } = Brushes.Transparent; // Прозрачный цвет по умолчанию
@@ -97,7 +97,7 @@ public abstract class Tetromino(int startX, int startY)
         }
 
         // Пробуем скорректировать смещение (kick correction)
-        int[] xOffsets = { -1, 1 }; // Попробуем сдвинуть влево и вправо
+        int[] xOffsets = {-1, 1 }; // Попробуем сдвинуть влево и вправо
         foreach (var xOffset in xOffsets)
         {
             if (CanPlace(board, rotated, X + xOffset, Y))
