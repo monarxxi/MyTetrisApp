@@ -5,8 +5,8 @@ namespace MyTetrisApp.Models;
 public abstract class Tetromino(int startX, int startY)
 {
     // Координаты текущей позиции фигурки на доске
-    public int X { get; protected set; } = startX;
-    public int Y { get; protected set; } = startY;
+    private int X { get; set; } = startX;
+    private int Y { get; set; } = startY;
 
     // Текущая форма фигурки
     protected int[,] Shape = new int[1, 1]; // Значение по умолчанию

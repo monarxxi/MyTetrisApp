@@ -7,14 +7,18 @@ public class Game(int boardWidth, int boardHeight)
     public Board Board { get; } = new(boardWidth, boardHeight); // Игровая доска
 
     public Tetromino CurrentTetromino { get; private set; } =
-        TetrominoFactory.CreateRandomTetromino(boardWidth / 2 - boardWidth / 10, 0); // Текущая фигурка
+        TetrominoFactory.CreateRandomTetromino(boardWidth / 2 - boardWidth / 10, 0); // Текущая фигур ка
 
     private bool _isRunning = true; // Состояние игры
-
+    
     public event Action? OnGameOver; // Событие завершения игры
-    public event Action<int>? OnLinesCleared; // Событие для передачи очищенных линий
+    
+    private int _clearedLines; // Счётчик очищенных линий
+    
+    public int ClearedLines => _clearedLines; // Открытое свойство для доступа
+    
+    public event Action? OnSpeedIncrease; // Событие для увеличения скорости
 
-    private int _totalLinesCleared; // Счётчик всех очищенных линий
 
     public void Update()
     {
@@ -27,12 +31,15 @@ public class Game(int boardWidth, int boardHeight)
         // Фиксируем фигурку на доске
         Board.LockTetromino(CurrentTetromino);
 
-        // Очищаем линии
+        // Очищаем линии и обновляем счётчик
         var linesCleared = Board.ClearLines();
-        if (linesCleared > 0)
+        _clearedLines += linesCleared;
+        
+        // Уведомляем об увеличении скорости каждые 3 линий
+        if (_clearedLines >= 3)
         {
-            _totalLinesCleared += linesCleared;
-            OnLinesCleared?.Invoke(_totalLinesCleared); // Вызываем событие с общим количеством очищенных линий
+            OnSpeedIncrease?.Invoke();
+            _clearedLines = 0; // Сбрасываем счётчик
         }
 
         // Создаем новую фигурку

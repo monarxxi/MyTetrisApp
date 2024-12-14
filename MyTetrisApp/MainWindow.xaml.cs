@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,9 +22,6 @@ public partial class MainWindow
         _game = game;
         InitializeComponent();
 
-        // Подписываемся на событие изменения количества очищенных линий
-        _game.OnLinesCleared += HandleLinesCleared;
-
         // Подписываемся на события клавиатуры
         KeyDown += OnKeyDown;
         KeyUp += OnKeyUp;
@@ -34,10 +32,37 @@ public partial class MainWindow
         StartGame();
     }
 
+    private void IncreaseSpeed()
+    {
+        switch (_speed)
+        {
+            case >= 300:
+                _speed -= 25;
+                break;
+            case >= 200:
+                _speed -= 10;
+                break;
+            case >= 100:
+                _speed -= 5;
+                break;
+            case >= 80:
+                break;
+        }
+        
+        if (_speed > 100) // Не уменьшаем скорость ниже 100 мс
+        {
+            _speed -= 50; // Уменьшаем интервал
+            _gameTimer.Interval = TimeSpan.FromMilliseconds(_speed); // Применяем новый интервал
+        }
+    }
+
     private void StartGame()
     {
         // Создаем экземпляр игры
         _game = new Game(10, 20);
+        
+        // Подписываемся на событие увеличения скорости
+        _game.OnSpeedIncrease += IncreaseSpeed;
 
         // Подписываемся на событие завершения игры
         _game.OnGameOver += GameOver;
@@ -141,20 +166,6 @@ public partial class MainWindow
         // Отображение сообщения о завершении игры
         MessageBox.Show("Game Over!");
         CompositionTarget.Rendering -= UpdateGame; // Останавливаем обновление игры
-    }
-
-    private void HandleLinesCleared(int totalLinesCleared)
-    {
-        // Увеличиваем скорость каждые 10 линий
-        if (totalLinesCleared % 2 == 0)
-        {
-            // Уменьшаем интервал таймера (увеличиваем скорость)
-            if (_speed > 100) // Не даем скорости стать слишком быстрой
-            {
-                _speed -= 50; // Уменьшаем интервал на 50 мс
-                _gameTimer.Interval = TimeSpan.FromMilliseconds(_speed); // Обновляем интервал таймера
-            }
-        }
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e)
