@@ -1,4 +1,5 @@
 using MyTetrisApp.Models;
+using System.Windows.Documents;
 
 namespace MyTetrisApp.Services;
 
@@ -25,13 +26,15 @@ public class Game(int boardWidth, int boardHeight)
 
     public void Update()
     {
+        var mover = new TetrominoMover(board: Board, tetromino: CurrentTetromino);
+
         Board.PrintBoard();
 
         if (!_isRunning)
             return;
 
         // Перемещение текущей фигурки вниз
-        if (CurrentTetromino.MoveDown(Board)) return;
+        if (mover.MoveDown()) return;
 
         // Фиксируем фигурку на доске
         Board.LockTetromino(CurrentTetromino);

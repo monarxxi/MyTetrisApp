@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using MyTetrisApp.Models;
 using MyTetrisApp.Services;
 
 namespace MyTetrisApp;
@@ -37,7 +38,7 @@ public partial class MainWindow
         HighScoreTextBlock.Text = _highScore.ToString();
 
         // Подписываемся на события клавиатуры
-        KeyDown += OnKeyDown;
+        KeyDown += OnKeyPress;
         KeyUp += OnKeyUp;
 
         // Настраиваем состояние по умолчанию
@@ -274,18 +275,19 @@ public partial class MainWindow
         _isGameRunning = false;
     }
 
-    private void OnKeyDown(object sender, KeyEventArgs e)
+    private void OnKeyPress(object sender, KeyEventArgs e)
     {
         if (!_isGameRunning || _isPaused) return;
+        var mover = new TetrominoMover(_game.Board, _game.CurrentTetromino);
 
         switch (e.Key)
         {
             case Key.Left:
-                _game.CurrentTetromino.MoveLeft(_game.Board);
+                mover.MoveLeft();
                 RenderGame();
                 break;
             case Key.Right:
-                _game.CurrentTetromino.MoveRight(_game.Board);
+                mover.MoveRight();
                 RenderGame();
                 break;
             case Key.Down:

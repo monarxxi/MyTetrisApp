@@ -2,19 +2,20 @@ using System.Windows.Media;
 
 namespace MyTetrisApp.Models;
 
-public abstract class Tetromino(int startX, int startY)
+public abstract class Tetromino
 {
-    // Координаты текущей позиции фигурки на доске
-    private int X { get; set; } = startX;
-    private int Y { get; set; } = startY;
+    public int X { get; set; }
+    public int Y { get; set; }
 
-    // Текущая форма фигурки
-    protected internal int[,] Shape = new int[1, 1]; // Значение по умолчанию
+    public int[,] Shape { get; protected set; } = new int[1, 1];
+    public Brush Color { get; protected init; } = Brushes.Transparent;
 
-    // Цвет фигурки
-    public Brush Color { get; protected init; } = Brushes.Transparent; // Прозрачный цвет по умолчанию
+    protected Tetromino(int startX, int startY)
+    {
+        X = startX;
+        Y = startY;
+    }
 
-    // Возвращает координаты ячеек фигурки относительно доски
     public IEnumerable<(int, int)> GetCells()
     {
         for (var row = 0; row < Shape.GetLength(0); row++)
@@ -29,55 +30,9 @@ public abstract class Tetromino(int startX, int startY)
         }
     }
 
-    public bool MoveLeft(Board board)
-    {
-        if (CanMove(board, -1, 0))
-        {
-            X--;
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool MoveRight(Board board)
-    {
-        if (CanMove(board, 1, 0))
-        {
-            X++;
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool MoveDown(Board board)
-    {
-        if (CanMove(board, 0, 1))
-        {
-            Y++;
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool CanMove(Board board, int dx, int dy)
-    {
-        foreach (var (x, y) in GetCells())
-        {
-            if (board.IsCellOccupied(x + dx, y + dy))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public virtual bool Rotate(Board board)
     {
-        var size = Shape.GetLength(0); // Размер квадратной матрицы 
+        var size = Shape.GetLength(0);
         var rotated = new int[size, size];
 
         // Транспонирование и инверсия строк
@@ -152,22 +107,5 @@ public abstract class Tetromino(int startX, int startY)
         }
 
         return true;
-    }
-
-// Получение координат ячеек после поворота
-    private IEnumerable<(int x, int y)> GetRotatedCells(int[,] rotated)
-    {
-        var size = rotated.GetLength(0);
-
-        for (var row = 0; row < size; row++)
-        {
-            for (var col = 0; col < size; col++)
-            {
-                if (rotated[row, col] == 1)
-                {
-                    yield return (X + col, Y + row);
-                }
-            }
-        }
     }
 }
