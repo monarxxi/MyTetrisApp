@@ -93,6 +93,7 @@ public partial class MainWindow
         _score = 0;
         _linesCleared = 0;
         _level = 1;
+        _speed = 300;
     }
 
     private void PauseGame()
@@ -122,6 +123,7 @@ public partial class MainWindow
         if (_isGameRunning)
         {
             _gameTimer.Stop();
+            
         }
 
         // Перезапускаем игру
