@@ -7,13 +7,14 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using MyTetrisApp.Services;
+using MyTetrisApp.Models;
 
 namespace MyTetrisApp;
 
 public partial class MainWindow
 {
     private Game _game;
-    private const int CellSize = 50; // Размер ячейки в пикселях
+    private const int CellSize = 47; // Размер ячейки в пикселях
     private DispatcherTimer _gameTimer = new(); // Таймер для обновления игры
     private int _speed = 300; // Интервал в миллисекундах, скорость падения блока (начальная скорость)
     private bool _isFastDropActive; // Флаг для быстрого падения

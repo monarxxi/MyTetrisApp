@@ -25,6 +25,8 @@ public class Game(int boardWidth, int boardHeight)
 
     public void Update()
     {
+        Board.PrintBoard();
+
         if (!_isRunning)
             return;
 
@@ -33,7 +35,7 @@ public class Game(int boardWidth, int boardHeight)
 
         // Фиксируем фигурку на доске
         Board.LockTetromino(CurrentTetromino);
-        
+
         // Подсчитываем количество очищенных линий
         var oldClearedLines = _clearedLines;
         _clearedLines += Board.ClearLines();
