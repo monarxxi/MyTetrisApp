@@ -7,7 +7,7 @@ public static class TetrominoFactory
     public static Tetromino CreateRandomTetromino(int startX, int startY)
     {
         // Генерация случайной фигурки
-        var type = Random.Next(0, 6);
+        var type = Random.Next(0, 7);
         return type switch
         {
             0 => new BlockI(startX, startY),

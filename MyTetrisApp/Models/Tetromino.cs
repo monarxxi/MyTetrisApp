@@ -97,8 +97,8 @@ public abstract class Tetromino(int startX, int startY)
         }
 
         // Пробуем скорректировать смещение (kick correction)
-        int[] xOffsets = {-1, 1 }; // Попробуем сдвинуть влево и вправо
-        foreach (var xOffset in xOffsets)
+        int[] xOffsets1 = { -1, 1 }; // Попробуем сдвинуть влево и вправо
+        foreach (var xOffset in xOffsets1)
         {
             if (CanPlace(board, rotated, X + xOffset, Y))
             {
@@ -107,6 +107,19 @@ public abstract class Tetromino(int startX, int startY)
                 return true;
             }
         }
+
+        // Пробуем скорректировать смещение (kick correction)
+        int[] xOffsets2 = { -2, 2 }; // Попробуем сдвинуть влево и вправо
+        foreach (var xOffset in xOffsets2)
+        {
+            if (CanPlace(board, rotated, X + xOffset, Y))
+            {
+                X += xOffset; // Применяем сдвиг
+                Shape = rotated;
+                return true;
+            }
+        }
+
 
         // Если ничего не помогло, поворот невозможен
         return false;

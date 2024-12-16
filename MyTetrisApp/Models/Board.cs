@@ -25,7 +25,7 @@ public class Board
             return true; // Ячейки за границей считаются занятыми
         return _cells[y, x] != 0;
     }
-    
+
     public Brush GetCellColor(int x, int y)
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height)
@@ -82,7 +82,8 @@ public class Board
         {
             for (var x = 0; x < Width; x++)
             {
-                _cells[y, x] = _cells[y - 1, x];
+                _cells[y, x] = _cells[y - 1, x]; // Сдвиг состояния ячейки вниз
+                _cellColors[y, x] = _cellColors[y - 1, x]; // Сдвиг цвета ячейки вниз
             }
         }
 
@@ -90,6 +91,7 @@ public class Board
         for (var x = 0; x < Width; x++)
         {
             _cells[0, x] = 0;
+            _cellColors[0, x] = Brushes.Transparent; // Очистка цвета верхней строки
         }
     }
 

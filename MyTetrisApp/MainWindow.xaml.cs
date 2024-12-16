@@ -7,7 +7,6 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using MyTetrisApp.Services;
-using MyTetrisApp.Models;
 
 namespace MyTetrisApp;
 
@@ -21,18 +20,18 @@ public partial class MainWindow
 
     private bool _isPaused; // Флаг для паузы
     private bool _isGameRunning; // Флаг, указывающий, что игра идёт
-    
+
     private int _score;
     private int _linesCleared;
     private int _level = 1;
     private const string HighScoreFilePath = "highscore.txt"; // Путь к файлу для хранения лучшего счёта
     private int _highScore; // Лучший счёт
-    
+
     public MainWindow(Game game)
     {
         _game = game;
         InitializeComponent();
-        
+
         // Загружаем лучший счёт
         LoadHighScore();
         HighScoreTextBlock.Text = _highScore.ToString();
@@ -47,7 +46,7 @@ public partial class MainWindow
 
         // Устанавливаем окно в полноэкранный режим
         WindowState = WindowState.Maximized;
-        
+
         // Обновляем таблицу
         UpdateStats();
     }
@@ -77,11 +76,11 @@ public partial class MainWindow
         _gameTimer.Start();
         _isGameRunning = true;
         _isPaused = false;
-        
+
         // Обновляем таблицу
         UpdateStats();
     }
-    
+
     protected override void OnClosing(CancelEventArgs e)
     {
         SaveHighScore();
@@ -118,7 +117,7 @@ public partial class MainWindow
     {
         SaveHighScore();
         ResetScore();
-        
+
         // Останавливаем текущую игру
         if (_isGameRunning)
         {
@@ -230,7 +229,7 @@ public partial class MainWindow
             switch (newLines)
             {
                 case 1:
-                    _score +=  100;
+                    _score += 100;
                     break;
                 case 2:
                     _score += 300;
@@ -242,11 +241,11 @@ public partial class MainWindow
                     _score += 1500;
                     break;
             }
-            
+
             // Проверяем уровень (каждые 3 линий)
             _level = 1 + (_linesCleared / 3);
             //_level = _speed;
-            
+
             // Обновляем лучший счёт
             if (_score > _highScore)
             {
@@ -267,7 +266,7 @@ public partial class MainWindow
     {
         SaveHighScore();
         ResetScore();
-        
+
         MessageBox.Show("Game Over!");
         _gameTimer.Stop();
         _isGameRunning = false;
@@ -335,14 +334,14 @@ public partial class MainWindow
     {
         RestartGame();
     }
-    
+
     private void UpdateStats()
     {
         ScoreTextBlock.Text = _score.ToString();
         LinesTextBlock.Text = _linesCleared.ToString();
         LevelTextBlock.Text = _level.ToString();
     }
-    
+
     private void LoadHighScore()
     {
         if (File.Exists(HighScoreFilePath))
@@ -359,7 +358,7 @@ public partial class MainWindow
     {
         File.WriteAllText(HighScoreFilePath, _highScore.ToString());
     }
-    
+
     private void RenderNextFigure()
     {
         NextFigureCanvas.Children.Clear();
